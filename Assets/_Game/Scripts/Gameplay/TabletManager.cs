@@ -22,10 +22,11 @@ namespace Crumble.Gameplay
         [SerializeField] private int stagesPerMaterial = 10;
         [Tooltip("Coins granted per point of damage dealt (GDD §2: earn per tap/tick).")]
         [SerializeField] private double coinPerDamageRatio = 0.02;
-        [Tooltip("Base click damage before tools/research multipliers (wired in Step 3).")]
-        [SerializeField] private double baseClickDamage = 1;
+
+        private const float DpsTickInterval = 0.25f;
 
         private ExcavationState _state;
+        private float _dpsTimer;
 
         public TabletMaterialSO CurrentMaterial { get; private set; }
         public BigDouble MaxHp { get; private set; }
@@ -35,8 +36,9 @@ namespace Crumble.Gameplay
         /// <summary>True while the current tablet is a material's final-stage "boss".</summary>
         public bool IsMilestone { get; private set; }
 
-        /// <summary>TODO Step 3: aggregate tool levels + research multipliers via UpgradeManager.</summary>
-        public BigDouble ClickDamage => baseClickDamage;
+        /// <summary>Aggregated by UpgradeManager (base + tools); research multiplies in Step 5.</summary>
+        public BigDouble ClickDamage =>
+            UpgradeManager.Instance != null ? UpgradeManager.Instance.TotalClickDamage : BigDouble.One;
 
         private void OnEnable() => GameEvents.GameLoaded += OnGameLoaded;
         private void OnDisable() => GameEvents.GameLoaded -= OnGameLoaded;
@@ -70,6 +72,29 @@ namespace Crumble.Gameplay
         public void Tap()
         {
             ApplyDamage(ClickDamage, fromClick: true);
+        }
+
+        /// <summary>Assistant DPS lands in fixed ticks so HP/coin events stay bounded.</summary>
+        private void Update()
+        {
+            if (_state == null)
+            {
+                return;
+            }
+
+            var dps = UpgradeManager.Instance != null ? UpgradeManager.Instance.TotalDps : BigDouble.Zero;
+            if (dps <= 0)
+            {
+                _dpsTimer = 0f;
+                return;
+            }
+
+            _dpsTimer += Time.deltaTime;
+            while (_dpsTimer >= DpsTickInterval)
+            {
+                _dpsTimer -= DpsTickInterval;
+                ApplyDamage(dps * DpsTickInterval, fromClick: false);
+            }
         }
 
         public void ApplyDamage(BigDouble damage, bool fromClick)

@@ -36,6 +36,16 @@ namespace Crumble.Core
         /// </summary>
         public static event Action<TabletMaterialSO, int, bool> TabletChanged;
 
+        // ---- Upgrades ----
+        /// <summary>(tool id, new level). Fired after a successful tool purchase.</summary>
+        public static event Action<string, int> ToolLevelChanged;
+
+        /// <summary>(assistant id, new level). Fired after a successful assistant purchase.</summary>
+        public static event Action<string, int> AssistantLevelChanged;
+
+        /// <summary>(total click damage, total passive DPS). Fired after load and any purchase.</summary>
+        public static event Action<BigDouble, BigDouble> StatsChanged;
+
         // ---- Lifecycle ----
         /// <summary>Fired once the save file has been loaded (or a fresh one created).</summary>
         public static event Action<SaveData> GameLoaded;
@@ -50,6 +60,9 @@ namespace Crumble.Core
         public static void RaiseTabletHpChanged(BigDouble current, BigDouble max) => TabletHpChanged?.Invoke(current, max);
         public static void RaiseTabletShattered(string materialId, int stage) => TabletShattered?.Invoke(materialId, stage);
         public static void RaiseTabletChanged(TabletMaterialSO material, int stage, bool isMilestone) => TabletChanged?.Invoke(material, stage, isMilestone);
+        public static void RaiseToolLevelChanged(string id, int level) => ToolLevelChanged?.Invoke(id, level);
+        public static void RaiseAssistantLevelChanged(string id, int level) => AssistantLevelChanged?.Invoke(id, level);
+        public static void RaiseStatsChanged(BigDouble clickDamage, BigDouble dps) => StatsChanged?.Invoke(clickDamage, dps);
         public static void RaiseGameLoaded(SaveData data) => GameLoaded?.Invoke(data);
         public static void RaiseGameSaved() => GameSaved?.Invoke();
     }

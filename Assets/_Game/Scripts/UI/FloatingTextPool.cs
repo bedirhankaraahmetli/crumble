@@ -59,6 +59,11 @@ namespace Crumble.UI
 
         private void OnTabletDamaged(BigDouble damage, bool fromClick)
         {
+            if (!fromClick)
+            {
+                return; // DPS ticks land 4×/sec — numbers for those would flood the screen
+            }
+
             if (_available.Count == 0 || worldAnchor == null)
             {
                 return;

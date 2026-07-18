@@ -1,5 +1,6 @@
 using Crumble.Core;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Crumble.Gameplay
@@ -25,6 +26,12 @@ namespace Crumble.Gameplay
 
             var pointer = Pointer.current;
             if (pointer == null || !pointer.press.wasPressedThisFrame)
+            {
+                return;
+            }
+
+            // Presses on UI (upgrade panel, buttons) must not also hit the tablet.
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             {
                 return;
             }

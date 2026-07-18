@@ -21,11 +21,15 @@ namespace Crumble.UI
         [SerializeField] private RectTransform hpFill;
         [SerializeField] private Text hpText;
 
+        [Header("Stats")]
+        [SerializeField] private Text statsText;
+
         private void OnEnable()
         {
             GameEvents.CoinsChanged += OnCoinsChanged;
             GameEvents.TabletChanged += OnTabletChanged;
             GameEvents.TabletHpChanged += OnHpChanged;
+            GameEvents.StatsChanged += OnStatsChanged;
         }
 
         private void OnDisable()
@@ -33,6 +37,16 @@ namespace Crumble.UI
             GameEvents.CoinsChanged -= OnCoinsChanged;
             GameEvents.TabletChanged -= OnTabletChanged;
             GameEvents.TabletHpChanged -= OnHpChanged;
+            GameEvents.StatsChanged -= OnStatsChanged;
+        }
+
+        private void OnStatsChanged(BigDouble clickDamage, BigDouble dps)
+        {
+            if (statsText != null)
+            {
+                statsText.text =
+                    $"Tap {NumberFormatter.Format(clickDamage)}    DPS {NumberFormatter.Format(dps)}";
+            }
         }
 
         private void OnCoinsChanged(BigDouble total)

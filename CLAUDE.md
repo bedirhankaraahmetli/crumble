@@ -47,8 +47,8 @@ Assets/_Game/
 
 1. ✅ **Foundation** — folders, BreakInfinity, Newtonsoft, GameEvents, GameMath + NumberFormatter (+41 tests), SO definitions, GameManager/SaveManager skeleton, Main.unity with _Bootstrap
 2. ✅ Core loop — TabletManager (5 crack visual states), tap damage, CurrencyManager, minimal portrait HUD, placeholder art generator, milestone "boss" tablets (final stage per material: 2× HP, 3× reward, tint + "(Hard)" label), 64 tests
-3. ➡️ Economy — 12 tools + 12 assistants, cost scaling, DPS tick, buy x1/x10/max
-4. Prestige + KP — cube-root preview, reset flow
+3. ✅ Economy — 12 tools + 12 assistants (SO assets + icons), UpgradeManager, DPS tick, tabbed buy panel with x1/x10/MAX
+4. ➡️ Prestige + KP — cube-root preview, reset flow
 5. Research Tree — prerequisite graph, effect aggregation, 4-branch UI (locked = grayed-readable; Stage 15 = "?" silhouette until Stage 14 maxed)
 6. Offline progress — welcome-back popup, research-capped accumulation
 7. Juice — Fever Mode combo bar, shake, particles, haptics

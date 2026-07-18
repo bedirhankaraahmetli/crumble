@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee9cbf4e03b86254dbb651c6c6e72cd1, type: 3}
+  m_Name: assistant_cosmic_watcher
+  m_EditorClassIdentifier: Crumble.Runtime::Crumble.Data.AssistantSO
+  Id: assistant_cosmic_watcher
+  DisplayName: Cosmic Watcher
+  OrderIndex: 11
+  BaseCost: 91300868590141440
+  GrowthFactor: 1.15
+  BaseDpsPerLevel: 3954653486
+  Icon: {fileID: 21300000, guid: 132f97170c9685546b466a1c00784014, type: 3}
