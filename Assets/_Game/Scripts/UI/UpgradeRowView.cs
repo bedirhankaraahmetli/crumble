@@ -35,7 +35,6 @@ namespace Crumble.UI
             _tool = tool;
             icon.sprite = tool.Icon;
             nameText.text = tool.DisplayName;
-            effectText.text = "+" + NumberFormatter.Format(tool.BaseDamagePerLevel) + " dmg / lv";
             buyButton.onClick.AddListener(OnBuyClicked);
         }
 
@@ -44,7 +43,6 @@ namespace Crumble.UI
             _assistant = assistant;
             icon.sprite = assistant.Icon;
             nameText.text = assistant.DisplayName;
-            effectText.text = "+" + NumberFormatter.Format(assistant.BaseDpsPerLevel) + " DPS / lv";
             buyButton.onClick.AddListener(OnBuyClicked);
         }
 
@@ -69,6 +67,13 @@ namespace Crumble.UI
 
             _displayedCount = count;
             _displayedCost = IsTool ? mgr.ToolCost(_tool, count) : mgr.AssistantCost(_assistant, count);
+
+            // effect scales with the batch: x1 shows the per-level rate, x10/MAX the total gain
+            var perLevel = IsTool ? _tool.BaseDamagePerLevel : _assistant.BaseDpsPerLevel;
+            var unit = IsTool ? " dmg" : " DPS";
+            effectText.text = count > 1
+                ? "+" + NumberFormatter.Format((BigDouble)perLevel * count) + unit
+                : "+" + NumberFormatter.Format(perLevel) + unit + " / lv";
 
             costText.text = "x" + count + "\n" + NumberFormatter.Format(_displayedCost);
             buyButton.interactable = affordableCount
