@@ -46,8 +46,8 @@ Assets/_Game/
 ## Build Roadmap (current step marked)
 
 1. ✅ **Foundation** — folders, BreakInfinity, Newtonsoft, GameEvents, GameMath + NumberFormatter (+41 tests), SO definitions, GameManager/SaveManager skeleton, Main.unity with _Bootstrap
-2. ➡️ Core loop — TabletManager (5 crack visual states), tap damage, CurrencyManager, minimal portrait HUD
-3. Economy — 12 tools + 12 assistants, cost scaling, DPS tick, buy x1/x10/max
+2. ✅ Core loop — TabletManager (5 crack visual states), tap damage, CurrencyManager, minimal portrait HUD, placeholder art generator, milestone "boss" tablets (final stage per material: 2× HP, 3× reward, tint + "(Hard)" label), 64 tests
+3. ➡️ Economy — 12 tools + 12 assistants, cost scaling, DPS tick, buy x1/x10/max
 4. Prestige + KP — cube-root preview, reset flow
 5. Research Tree — prerequisite graph, effect aggregation, 4-branch UI (locked = grayed-readable; Stage 15 = "?" silhouette until Stage 14 maxed)
 6. Offline progress — welcome-back popup, research-capped accumulation
@@ -61,5 +61,6 @@ Update the ➡️ marker when a step is completed.
 ## Verification
 
 - Run EditMode tests (Unity Test Runner) after any change to `GameMath`, `NumberFormatter`, or save code.
+- Dev tools: `Crumble → Dev → Reset Save` wipes the save (live-resets when playing); `Crumble → Run EditMode Tests` writes results to `Temp/crumble_test_results.txt`.
 - Use Unity MCP tools: enter Play Mode, exercise the changed loop (tap / buy / prestige), then check `Unity_GetConsoleLogs` for errors and capture the Game view for UI checks.
 - A change isn't done until the project compiles with zero console errors and a save round-trips (save → reload → identical state).

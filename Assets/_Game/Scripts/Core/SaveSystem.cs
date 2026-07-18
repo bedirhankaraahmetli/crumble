@@ -60,6 +60,18 @@ namespace Crumble.Core
             return TryRead(path) ?? TryRead(path + ".bak");
         }
 
+        /// <summary>Removes the save and all its companions (.bak, .tmp) from disk.</summary>
+        public static void Delete(string path)
+        {
+            foreach (var file in new[] { path, path + ".bak", path + ".tmp" })
+            {
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                }
+            }
+        }
+
         private static SaveData TryRead(string path)
         {
             try

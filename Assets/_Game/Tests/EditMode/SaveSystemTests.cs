@@ -161,5 +161,24 @@ namespace Crumble.Tests
             SaveSystem.Write(MakeSample(), _path);
             Assert.That(File.Exists(_path + ".tmp"), Is.False);
         }
+
+        [Test]
+        public void Delete_RemovesSaveAndBackup()
+        {
+            SaveSystem.Write(MakeSample(), _path);
+            SaveSystem.Write(MakeSample(), _path); // second write creates the .bak
+
+            SaveSystem.Delete(_path);
+
+            Assert.That(File.Exists(_path), Is.False);
+            Assert.That(File.Exists(_path + ".bak"), Is.False);
+            Assert.That(SaveSystem.Read(_path), Is.Null);
+        }
+
+        [Test]
+        public void Delete_MissingFiles_IsANoOp()
+        {
+            Assert.DoesNotThrow(() => SaveSystem.Delete(_path));
+        }
     }
 }

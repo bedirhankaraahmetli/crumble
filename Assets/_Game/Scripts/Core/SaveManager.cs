@@ -36,6 +36,19 @@ namespace Crumble.Core
             GameEvents.RaiseGameSaved();
         }
 
+        /// <summary>
+        /// Wipes the save on disk and restarts from a fresh SaveData. All managers rebind
+        /// via GameLoaded, so the game resets live without leaving play mode.
+        /// Development tool today; the Hard Prestige flow gets its own dedicated logic.
+        /// </summary>
+        public void ResetSave()
+        {
+            SaveSystem.Delete(SavePath);
+            Data = new SaveData();
+            _autoSaveTimer = 0f;
+            GameEvents.RaiseGameLoaded(Data);
+        }
+
         private void Update()
         {
             if (Data == null)
