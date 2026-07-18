@@ -29,8 +29,18 @@ namespace Crumble.Data
 
         [Header("Balance")]
         public double BaseHp = 10;
+        [Tooltip("HP growth per stage within this material: HP = BaseHp × Difficulty^stageInMaterial.")]
+        public double DifficultyFactor = 1.5;
         [Tooltip("Coins awarded on shatter, before multipliers.")]
         public double BreakReward = 5;
+        [Tooltip("Shatter reward growth per stage within this material.")]
+        public double RewardGrowthFactor = 1.4;
+
+        [Header("Milestone (final stage of this material)")]
+        [Tooltip("Extra HP on the material's last stage — the 'boss' tablet.")]
+        public double MilestoneHpMultiplier = 2.0;
+        [Tooltip("Extra shatter reward on the material's last stage.")]
+        public double MilestoneRewardMultiplier = 3.0;
 
         [Header("Visuals")]
         [Tooltip("5 crack states: Full, Little Cracked, Cracked, Heavily Cracked, Shattered.")]

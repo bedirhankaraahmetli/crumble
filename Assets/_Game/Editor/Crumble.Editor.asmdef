@@ -5,7 +5,8 @@
         "UnityEditor.TestRunner",
         "UnityEngine.TestRunner",
         "Crumble.Runtime",
-        "BreakInfinity"
+        "BreakInfinity",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [
         "Editor"

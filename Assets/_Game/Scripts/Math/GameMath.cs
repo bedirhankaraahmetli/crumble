@@ -112,5 +112,80 @@ namespace Crumble.Numerics
         {
             return BigDouble.Pow(value, 1.0 / 3.0);
         }
+
+        /// <summary>Lump-sum coins for shattering a tablet (grows within a material like HP does).</summary>
+        public static BigDouble TabletReward(BigDouble baseReward, double rewardGrowthFactor, int stageWithinMaterial)
+        {
+            return baseReward * BigDouble.Pow(rewardGrowthFactor, stageWithinMaterial);
+        }
+
+        /// <summary>Coin trickle per point of damage dealt (GDD §2: earn per tap / per tick).</summary>
+        public static BigDouble CoinsForDamage(BigDouble damage, double coinPerDamageRatio)
+        {
+            return damage * coinPerDamageRatio;
+        }
+
+        /// <summary>
+        /// Which material a global stage belongs to. Progression never runs out: past the
+        /// last material, the index stays capped and stages keep scaling there.
+        /// </summary>
+        public static int MaterialIndexForStage(int stage, int stagesPerMaterial, int materialCount)
+        {
+            if (stage < 0 || stagesPerMaterial <= 0 || materialCount <= 0)
+            {
+                return 0;
+            }
+
+            var index = stage / stagesPerMaterial;
+            return index >= materialCount ? materialCount - 1 : index;
+        }
+
+        /// <summary>
+        /// Stage counted within the current material — the exponent for HP/reward scaling.
+        /// Grows without bound on the final material so difficulty never plateaus.
+        /// </summary>
+        public static int StageWithinMaterial(int stage, int stagesPerMaterial, int materialCount)
+        {
+            if (stage < 0 || stagesPerMaterial <= 0 || materialCount <= 0)
+            {
+                return 0;
+            }
+
+            return stage - MaterialIndexForStage(stage, stagesPerMaterial, materialCount) * stagesPerMaterial;
+        }
+
+        /// <summary>
+        /// True on a material's final stage — the milestone ("boss") tablet with extra HP
+        /// and reward. On the endless last material this recurs every stagesPerMaterial
+        /// stages so milestones never stop appearing.
+        /// </summary>
+        public static bool IsMilestoneStage(int stage, int stagesPerMaterial, int materialCount)
+        {
+            if (stage < 0 || stagesPerMaterial <= 0 || materialCount <= 0)
+            {
+                return false;
+            }
+
+            return StageWithinMaterial(stage, stagesPerMaterial, materialCount) % stagesPerMaterial
+                   == stagesPerMaterial - 1;
+        }
+
+        /// <summary>Tablet HP including the milestone-stage multiplier.</summary>
+        public static BigDouble TabletHp(
+            BigDouble baseHp, double difficultyFactor, int stageWithinMaterial,
+            bool isMilestone, double milestoneHpMultiplier)
+        {
+            var hp = TabletHp(baseHp, difficultyFactor, stageWithinMaterial);
+            return isMilestone ? hp * milestoneHpMultiplier : hp;
+        }
+
+        /// <summary>Shatter reward including the milestone-stage multiplier.</summary>
+        public static BigDouble TabletReward(
+            BigDouble baseReward, double rewardGrowthFactor, int stageWithinMaterial,
+            bool isMilestone, double milestoneRewardMultiplier)
+        {
+            var reward = TabletReward(baseReward, rewardGrowthFactor, stageWithinMaterial);
+            return isMilestone ? reward * milestoneRewardMultiplier : reward;
+        }
     }
 }

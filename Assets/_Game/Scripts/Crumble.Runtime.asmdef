@@ -2,7 +2,8 @@
     "name": "Crumble.Runtime",
     "rootNamespace": "Crumble",
     "references": [
-        "BreakInfinity"
+        "BreakInfinity",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

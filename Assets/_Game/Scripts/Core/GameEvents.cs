@@ -1,5 +1,6 @@
 using System;
 using BreakInfinity;
+using Crumble.Data;
 
 namespace Crumble.Core
 {
@@ -29,6 +30,12 @@ namespace Crumble.Core
         /// <summary>(material id, stage). Fired when a tablet reaches 0 HP.</summary>
         public static event Action<string, int> TabletShattered;
 
+        /// <summary>
+        /// (material, stage, isMilestone). Fired when a new tablet spawns (boot, or after
+        /// a shatter). Milestone = the material's final-stage "boss" tablet.
+        /// </summary>
+        public static event Action<TabletMaterialSO, int, bool> TabletChanged;
+
         // ---- Lifecycle ----
         /// <summary>Fired once the save file has been loaded (or a fresh one created).</summary>
         public static event Action<SaveData> GameLoaded;
@@ -42,6 +49,7 @@ namespace Crumble.Core
         public static void RaiseTabletDamaged(BigDouble damage, bool fromClick) => TabletDamaged?.Invoke(damage, fromClick);
         public static void RaiseTabletHpChanged(BigDouble current, BigDouble max) => TabletHpChanged?.Invoke(current, max);
         public static void RaiseTabletShattered(string materialId, int stage) => TabletShattered?.Invoke(materialId, stage);
+        public static void RaiseTabletChanged(TabletMaterialSO material, int stage, bool isMilestone) => TabletChanged?.Invoke(material, stage, isMilestone);
         public static void RaiseGameLoaded(SaveData data) => GameLoaded?.Invoke(data);
         public static void RaiseGameSaved() => GameSaved?.Invoke();
     }
