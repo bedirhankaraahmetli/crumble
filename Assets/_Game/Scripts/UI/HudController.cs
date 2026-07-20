@@ -24,12 +24,16 @@ namespace Crumble.UI
         [Header("Stats")]
         [SerializeField] private Text statsText;
 
+        [Header("Prestige")]
+        [SerializeField] private Text kpText;
+
         private void OnEnable()
         {
             GameEvents.CoinsChanged += OnCoinsChanged;
             GameEvents.TabletChanged += OnTabletChanged;
             GameEvents.TabletHpChanged += OnHpChanged;
             GameEvents.StatsChanged += OnStatsChanged;
+            GameEvents.KnowledgePointsChanged += OnKnowledgeChanged;
         }
 
         private void OnDisable()
@@ -38,6 +42,15 @@ namespace Crumble.UI
             GameEvents.TabletChanged -= OnTabletChanged;
             GameEvents.TabletHpChanged -= OnHpChanged;
             GameEvents.StatsChanged -= OnStatsChanged;
+            GameEvents.KnowledgePointsChanged -= OnKnowledgeChanged;
+        }
+
+        private void OnKnowledgeChanged(BigDouble total)
+        {
+            if (kpText != null)
+            {
+                kpText.text = "KP " + NumberFormatter.Format(total);
+            }
         }
 
         private void OnStatsChanged(BigDouble clickDamage, BigDouble dps)

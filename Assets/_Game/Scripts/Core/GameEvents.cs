@@ -46,6 +46,10 @@ namespace Crumble.Core
         /// <summary>(total click damage, total passive DPS). Fired after load and any purchase.</summary>
         public static event Action<BigDouble, BigDouble> StatsChanged;
 
+        // ---- Prestige ----
+        /// <summary>(KP gained). Fired after a Standard Prestige completes (state already reset).</summary>
+        public static event Action<BigDouble> Prestige;
+
         // ---- Lifecycle ----
         /// <summary>Fired once the save file has been loaded (or a fresh one created).</summary>
         public static event Action<SaveData> GameLoaded;
@@ -63,6 +67,7 @@ namespace Crumble.Core
         public static void RaiseToolLevelChanged(string id, int level) => ToolLevelChanged?.Invoke(id, level);
         public static void RaiseAssistantLevelChanged(string id, int level) => AssistantLevelChanged?.Invoke(id, level);
         public static void RaiseStatsChanged(BigDouble clickDamage, BigDouble dps) => StatsChanged?.Invoke(clickDamage, dps);
+        public static void RaisePrestige(BigDouble kpGained) => Prestige?.Invoke(kpGained);
         public static void RaiseGameLoaded(SaveData data) => GameLoaded?.Invoke(data);
         public static void RaiseGameSaved() => GameSaved?.Invoke();
     }

@@ -121,6 +121,13 @@ namespace Crumble.Tests
         }
 
         [Test]
+        public void PrestigeKnowledge_ExactlyAtDivisor_IsOne()
+        {
+            var kp = GameMath.PrestigeKnowledge(new BigDouble(1, 9), new BigDouble(1, 9));
+            Assert.That(kp.ToDouble(), Is.EqualTo(1).Within(1e-9));
+        }
+
+        [Test]
         public void PrestigeKnowledge_ZeroCoins_IsZero()
         {
             Assert.That(GameMath.PrestigeKnowledge(0, 1e9).ToDouble(), Is.EqualTo(0));

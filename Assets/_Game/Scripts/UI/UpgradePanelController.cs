@@ -40,6 +40,7 @@ namespace Crumble.UI
             GameEvents.CoinsChanged += OnCoinsChanged;
             GameEvents.ToolLevelChanged += OnLevelChanged;
             GameEvents.AssistantLevelChanged += OnLevelChanged;
+            GameEvents.Prestige += OnPrestige;
         }
 
         private void OnDisable()
@@ -47,6 +48,15 @@ namespace Crumble.UI
             GameEvents.CoinsChanged -= OnCoinsChanged;
             GameEvents.ToolLevelChanged -= OnLevelChanged;
             GameEvents.AssistantLevelChanged -= OnLevelChanged;
+            GameEvents.Prestige -= OnPrestige;
+        }
+
+        private void OnPrestige(BigDouble kpGained)
+        {
+            if (_built)
+            {
+                RefreshVisible(); // every level went back to 0 — full row refresh
+            }
         }
 
         private void Start()
