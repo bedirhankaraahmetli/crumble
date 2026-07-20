@@ -71,8 +71,8 @@ Handy editor menus:
 - [x] **Foundation** — BigDouble math core, event bus, versioned atomic save system, test suite
 - [x] **Core loop** — tap damage, 5 crack states, stage progression, milestone bosses
 - [x] **Economy** — 12 tools + 12 assistants, DPS tick, x1/x10/MAX buy panel
-- [ ] **Prestige** — cube-root Knowledge Points, reset flow *(next up)*
-- [ ] **Research Tree** — 4 branches × 15 stages, prerequisite graph
+- [x] **Prestige** — cube-root Knowledge Points, live preview, confirm + reset flow
+- [ ] **Research Tree** — 4 branches × 15 stages, prerequisite graph *(next up)*
 - [ ] **Offline progress** — welcome-back earnings
 - [ ] **Juice** — Fever Mode, screen shake, particles, haptics
 - [ ] **Side systems** — Expedition Tent, Museum & Artifacts, dynamic events
