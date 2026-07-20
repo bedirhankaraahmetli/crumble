@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73e6ffaf10dd2c44396ac4b9d650d19b, type: 3}
+  m_Name: research_economy_s09
+  m_EditorClassIdentifier: Crumble.Runtime::Crumble.Data.ResearchNodeSO
+  Id: research_economy_s09
+  DisplayName: Treasure Instincts
+  Description: 
+  Branch: 2
+  Stage: 9
+  BaseKpCost: 43
+  CostGrowthFactor: 2
+  MaxLevel: 5
+  EffectType: 7
+  EffectPerLevel: 0.2
+  Prerequisites:
+  - Node: {fileID: 11400000, guid: 84a90850116036249855fd05d862e980, type: 2}
+    RequiredLevel: 1

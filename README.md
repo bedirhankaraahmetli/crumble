@@ -72,8 +72,8 @@ Handy editor menus:
 - [x] **Core loop** — tap damage, 5 crack states, stage progression, milestone bosses
 - [x] **Economy** — 12 tools + 12 assistants, DPS tick, x1/x10/MAX buy panel
 - [x] **Prestige** — cube-root Knowledge Points, live preview, confirm + reset flow
-- [ ] **Research Tree** — 4 branches × 15 stages, prerequisite graph *(next up)*
-- [ ] **Offline progress** — welcome-back earnings
+- [x] **Research Tree** — 4 branches × 15 stages, prerequisite graph, KP-powered permanent multipliers
+- [ ] **Offline progress** — welcome-back earnings *(next up)*
 - [ ] **Juice** — Fever Mode, screen shake, particles, haptics
 - [ ] **Side systems** — Expedition Tent, Museum & Artifacts, dynamic events
 - [ ] **Endgame** — Cosmic Archive, Time Crystals, Cosmic Altar

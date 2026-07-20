@@ -46,6 +46,10 @@ namespace Crumble.Core
         /// <summary>(total click damage, total passive DPS). Fired after load and any purchase.</summary>
         public static event Action<BigDouble, BigDouble> StatsChanged;
 
+        // ---- Research ----
+        /// <summary>(node id, new level). Fired after a successful research purchase.</summary>
+        public static event Action<string, int> ResearchNodeChanged;
+
         // ---- Prestige ----
         /// <summary>(KP gained). Fired after a Standard Prestige completes (state already reset).</summary>
         public static event Action<BigDouble> Prestige;
@@ -67,6 +71,7 @@ namespace Crumble.Core
         public static void RaiseToolLevelChanged(string id, int level) => ToolLevelChanged?.Invoke(id, level);
         public static void RaiseAssistantLevelChanged(string id, int level) => AssistantLevelChanged?.Invoke(id, level);
         public static void RaiseStatsChanged(BigDouble clickDamage, BigDouble dps) => StatsChanged?.Invoke(clickDamage, dps);
+        public static void RaiseResearchNodeChanged(string id, int level) => ResearchNodeChanged?.Invoke(id, level);
         public static void RaisePrestige(BigDouble kpGained) => Prestige?.Invoke(kpGained);
         public static void RaiseGameLoaded(SaveData data) => GameLoaded?.Invoke(data);
         public static void RaiseGameSaved() => GameSaved?.Invoke();

@@ -51,5 +51,28 @@ namespace Crumble.Gameplay
             GameEvents.RaiseCoinsChanged(_state.AntiqueCoins);
             return true;
         }
+
+        public void AddKnowledge(BigDouble amount)
+        {
+            if (_state == null || amount <= 0)
+            {
+                return;
+            }
+
+            _state.KnowledgePoints += amount;
+            GameEvents.RaiseKnowledgePointsChanged(_state.KnowledgePoints);
+        }
+
+        public bool TrySpendKnowledge(BigDouble cost)
+        {
+            if (_state == null || cost < 0 || _state.KnowledgePoints < cost)
+            {
+                return false;
+            }
+
+            _state.KnowledgePoints -= cost;
+            GameEvents.RaiseKnowledgePointsChanged(_state.KnowledgePoints);
+            return true;
+        }
     }
 }

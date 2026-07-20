@@ -41,7 +41,7 @@ namespace Crumble.Gameplay
             }
 
             var kp = PendingKnowledge;
-            _data.Currencies.KnowledgePoints += kp;
+            CurrencyManager.Instance.AddKnowledge(kp);
 
             // Wipe the run. KP stays; research_tree_state and Time Crystals (future
             // systems) are deliberately untouched — only Hard Prestige clears those.

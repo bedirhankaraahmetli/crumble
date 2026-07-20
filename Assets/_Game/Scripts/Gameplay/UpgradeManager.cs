@@ -57,6 +57,15 @@ namespace Crumble.Gameplay
             }
         }
 
+        /// <summary>External modifiers changed (research purchase) — re-aggregate stats.</summary>
+        public void RefreshStats()
+        {
+            if (_state != null)
+            {
+                RecomputeStats();
+            }
+        }
+
         public int GetToolLevel(ToolSO tool)
         {
             return _state != null && _state.Tools.TryGetValue(tool.Id, out var level) ? level : 0;
@@ -67,26 +76,34 @@ namespace Crumble.Gameplay
             return _state != null && _state.Assistants.TryGetValue(assistant.Id, out var level) ? level : 0;
         }
 
+        /// <summary>Research discount applied to every tool/assistant price (already capped).</summary>
+        private static double CostReduction =>
+            ResearchManager.Instance != null ? ResearchManager.Instance.UpgradeCostReduction : 0;
+
         public BigDouble ToolCost(ToolSO tool, int count)
         {
-            return GameMath.BulkUpgradeCost(tool.BaseCost, tool.GrowthFactor, GetToolLevel(tool), count);
+            var baseCost = GameMath.ApplyCostReduction(tool.BaseCost, CostReduction);
+            return GameMath.BulkUpgradeCost(baseCost, tool.GrowthFactor, GetToolLevel(tool), count);
         }
 
         public BigDouble AssistantCost(AssistantSO assistant, int count)
         {
-            return GameMath.BulkUpgradeCost(assistant.BaseCost, assistant.GrowthFactor, GetAssistantLevel(assistant), count);
+            var baseCost = GameMath.ApplyCostReduction(assistant.BaseCost, CostReduction);
+            return GameMath.BulkUpgradeCost(baseCost, assistant.GrowthFactor, GetAssistantLevel(assistant), count);
         }
 
         public int MaxAffordableTool(ToolSO tool)
         {
+            var baseCost = GameMath.ApplyCostReduction(tool.BaseCost, CostReduction);
             return GameMath.MaxAffordable(
-                tool.BaseCost, tool.GrowthFactor, GetToolLevel(tool), CurrencyManager.Instance.AntiqueCoins);
+                baseCost, tool.GrowthFactor, GetToolLevel(tool), CurrencyManager.Instance.AntiqueCoins);
         }
 
         public int MaxAffordableAssistant(AssistantSO assistant)
         {
+            var baseCost = GameMath.ApplyCostReduction(assistant.BaseCost, CostReduction);
             return GameMath.MaxAffordable(
-                assistant.BaseCost, assistant.GrowthFactor, GetAssistantLevel(assistant),
+                baseCost, assistant.GrowthFactor, GetAssistantLevel(assistant),
                 CurrencyManager.Instance.AntiqueCoins);
         }
 
@@ -154,6 +171,13 @@ namespace Crumble.Gameplay
                         dps += (BigDouble)assistant.BaseDpsPerLevel * level;
                     }
                 }
+            }
+
+            var research = ResearchManager.Instance;
+            if (research != null)
+            {
+                click *= research.ClickDamageMultiplier;
+                dps *= research.DpsMultiplier;
             }
 
             TotalClickDamage = click;

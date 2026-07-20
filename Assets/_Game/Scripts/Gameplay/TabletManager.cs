@@ -36,9 +36,12 @@ namespace Crumble.Gameplay
         /// <summary>True while the current tablet is a material's final-stage "boss".</summary>
         public bool IsMilestone { get; private set; }
 
-        /// <summary>Aggregated by UpgradeManager (base + tools); research multiplies in Step 5.</summary>
+        /// <summary>Aggregated by UpgradeManager (base + tools, × research multipliers).</summary>
         public BigDouble ClickDamage =>
             UpgradeManager.Instance != null ? UpgradeManager.Instance.TotalClickDamage : BigDouble.One;
+
+        private static double ResearchCoinMultiplier =>
+            ResearchManager.Instance != null ? ResearchManager.Instance.CoinMultiplier : 1;
 
         private void OnEnable() => GameEvents.GameLoaded += OnGameLoaded;
         private void OnDisable() => GameEvents.GameLoaded -= OnGameLoaded;
@@ -105,7 +108,8 @@ namespace Crumble.Gameplay
             }
 
             _state.RemainingHp -= damage;
-            CurrencyManager.Instance.AddCoins(GameMath.CoinsForDamage(damage, coinPerDamageRatio));
+            CurrencyManager.Instance.AddCoins(
+                GameMath.CoinsForDamage(damage, coinPerDamageRatio) * ResearchCoinMultiplier);
             GameEvents.RaiseTabletDamaged(damage, fromClick);
 
             if (_state.RemainingHp <= 0)
@@ -124,7 +128,7 @@ namespace Crumble.Gameplay
             var reward = GameMath.TabletReward(
                 CurrentMaterial.BreakReward, CurrentMaterial.RewardGrowthFactor, stageInMaterial,
                 IsMilestone, CurrentMaterial.MilestoneRewardMultiplier);
-            CurrencyManager.Instance.AddCoins(reward);
+            CurrencyManager.Instance.AddCoins(reward * ResearchCoinMultiplier);
 
             GameEvents.RaiseTabletHpChanged(BigDouble.Zero, MaxHp);
             GameEvents.RaiseTabletShattered(CurrentMaterial.Id, _state.Stage);

@@ -9,6 +9,16 @@ namespace Crumble.Numerics
     /// </summary>
     public static class GameMath
     {
+        /// <summary>Research can never discount upgrades by more than this (anti-degenerate cap).</summary>
+        public const double MaxUpgradeCostReduction = 0.5;
+
+        /// <summary>Applies the research upgrade-cost discount, clamped to the cap.</summary>
+        public static BigDouble ApplyCostReduction(BigDouble baseCost, double reduction)
+        {
+            var clamped = Math.Max(0.0, Math.Min(reduction, MaxUpgradeCostReduction));
+            return baseCost * (1.0 - clamped);
+        }
+
         /// <summary>Cost = BaseCost × GrowthFactor^Level (GDD §9).</summary>
         public static BigDouble UpgradeCost(BigDouble baseCost, double growthFactor, int level)
         {

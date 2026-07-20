@@ -141,5 +141,25 @@ namespace Crumble.Tests
             var b = GameMath.PrestigeKnowledge(new BigDouble(3, 15), divisor);
             Assert.That(b >= a, Is.True);
         }
+
+        // ---- ApplyCostReduction ----
+
+        [Test]
+        public void ApplyCostReduction_DiscountsProportionally()
+        {
+            AssertApprox(90, GameMath.ApplyCostReduction(100, 0.1));
+        }
+
+        [Test]
+        public void ApplyCostReduction_ClampsAtTheCap()
+        {
+            AssertApprox(50, GameMath.ApplyCostReduction(100, 0.9)); // capped at 50%
+        }
+
+        [Test]
+        public void ApplyCostReduction_NegativeReduction_IsIgnored()
+        {
+            AssertApprox(100, GameMath.ApplyCostReduction(100, -0.25));
+        }
     }
 }
