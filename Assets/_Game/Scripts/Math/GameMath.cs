@@ -123,6 +123,35 @@ namespace Crumble.Numerics
             return BigDouble.Pow(value, 1.0 / 3.0);
         }
 
+        /// <summary>Elapsed offline time actually credited, clamped by the (research-extended) cap.</summary>
+        public static double CappedOfflineSeconds(double elapsedSeconds, double capHours)
+        {
+            return Math.Max(0.0, Math.Min(elapsedSeconds, capHours * 3600.0));
+        }
+
+        /// <summary>
+        /// Coins earned while away (GDD §6): assistants keep dealing damage, which pays the
+        /// per-damage trickle plus amortized shatter rewards for the tablet the player is
+        /// parked on (no stage advancement offline — conservative by design), all scaled by
+        /// the offline efficiency fraction.
+        /// </summary>
+        public static BigDouble OfflineCoins(
+            BigDouble dps, double seconds, double coinPerDamageRatio,
+            BigDouble tabletMaxHp, BigDouble tabletShatterReward, double efficiency)
+        {
+            if (dps <= 0 || seconds <= 0 || efficiency <= 0)
+            {
+                return BigDouble.Zero;
+            }
+
+            var totalDamage = dps * seconds;
+            var trickle = totalDamage * coinPerDamageRatio;
+            var shatters = tabletMaxHp > 0
+                ? totalDamage / tabletMaxHp * tabletShatterReward
+                : BigDouble.Zero;
+            return (trickle + shatters) * efficiency;
+        }
+
         /// <summary>Lump-sum coins for shattering a tablet (grows within a material like HP does).</summary>
         public static BigDouble TabletReward(BigDouble baseReward, double rewardGrowthFactor, int stageWithinMaterial)
         {

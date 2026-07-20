@@ -20,7 +20,7 @@ MonoBehaviour:
   BaseKpCost: 69
   CostGrowthFactor: 2
   MaxLevel: 5
-  EffectType: 4
+  EffectType: 6
   EffectPerLevel: 0.22
   Prerequisites:
   - Node: {fileID: 11400000, guid: 9d0346a32b98dc2458b25e77e89c8332, type: 2}

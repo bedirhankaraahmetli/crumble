@@ -57,7 +57,9 @@ namespace Crumble.EditorTools
                     "Self-Repair Protocols", "Swarm Coordination", "Perpetual Motion", "Quantum Efficiency",
                     "Hive Logistics", "Autonomous Foremen", "The Endless Shift",
                 },
-                Effect = stage => ResearchEffectType.AssistantDpsMultiplier,
+                Effect = stage => stage == 5 || stage == 10
+                    ? ResearchEffectType.OfflineEfficiency
+                    : ResearchEffectType.AssistantDpsMultiplier,
             },
             new BranchDef
             {
@@ -70,9 +72,11 @@ namespace Crumble.EditorTools
                     "Treasure Instincts", "Auction Mastery", "Golden Ledger", "Monopoly Rights",
                     "Coin Alchemy", "The Midas Method", "The Golden Archive",
                 },
-                Effect = stage => stage == 2 || stage == 5 || stage == 8 || stage == 12
+                Effect = stage => stage == 2 || stage == 8 || stage == 12
                     ? ResearchEffectType.UpgradeCostReduction
-                    : ResearchEffectType.CoinDropMultiplier,
+                    : stage == 5 || stage == 10
+                        ? ResearchEffectType.OfflineCapHours
+                        : ResearchEffectType.CoinDropMultiplier,
             },
             new BranchDef
             {
@@ -146,6 +150,7 @@ namespace Crumble.EditorTools
                     so.EffectType = effect;
                     so.EffectPerLevel = isUltimate ? 1.0
                         : effect == ResearchEffectType.UpgradeCostReduction ? 0.02
+                        : effect == ResearchEffectType.OfflineCapHours ? 1.0 // +1 hour per level
                         : 0.04 + 0.02 * (stage - 1);
 
                     if (isNew)

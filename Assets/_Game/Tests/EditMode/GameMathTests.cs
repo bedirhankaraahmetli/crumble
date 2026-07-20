@@ -161,5 +161,39 @@ namespace Crumble.Tests
         {
             AssertApprox(100, GameMath.ApplyCostReduction(100, -0.25));
         }
+
+        // ---- Offline progress ----
+
+        [Test]
+        public void CappedOfflineSeconds_ClampsToTheCap()
+        {
+            Assert.That(GameMath.CappedOfflineSeconds(10 * 3600, 2), Is.EqualTo(2 * 3600));
+            Assert.That(GameMath.CappedOfflineSeconds(600, 2), Is.EqualTo(600));
+            Assert.That(GameMath.CappedOfflineSeconds(-50, 2), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void OfflineCoins_TrickplePlusAmortizedShatters()
+        {
+            // 10 DPS × 3600s = 36000 damage; trickle 36000×0.02 = 720;
+            // shatters 36000/100 HP × 5 reward = 1800; ×0.5 efficiency = 1260
+            var coins = GameMath.OfflineCoins(10, 3600, 0.02, 100, 5, 0.5);
+            AssertApprox(1260, coins);
+        }
+
+        [Test]
+        public void OfflineCoins_ScalesWithEfficiency()
+        {
+            var half = GameMath.OfflineCoins(10, 3600, 0.02, 100, 5, 0.5);
+            var full = GameMath.OfflineCoins(10, 3600, 0.02, 100, 5, 1.0);
+            AssertApprox(2, full / half);
+        }
+
+        [Test]
+        public void OfflineCoins_NoDpsOrTime_IsZero()
+        {
+            Assert.That(GameMath.OfflineCoins(0, 3600, 0.02, 100, 5, 0.5) == 0, Is.True);
+            Assert.That(GameMath.OfflineCoins(10, 0, 0.02, 100, 5, 0.5) == 0, Is.True);
+        }
     }
 }

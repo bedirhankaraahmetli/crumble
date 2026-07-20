@@ -50,6 +50,10 @@ namespace Crumble.Core
         /// <summary>(node id, new level). Fired after a successful research purchase.</summary>
         public static event Action<string, int> ResearchNodeChanged;
 
+        // ---- Offline progress ----
+        /// <summary>(pending coins, credited seconds). Fired once at boot when the player returns.</summary>
+        public static event Action<BigDouble, double> OfflineEarningsReady;
+
         // ---- Prestige ----
         /// <summary>(KP gained). Fired after a Standard Prestige completes (state already reset).</summary>
         public static event Action<BigDouble> Prestige;
@@ -72,6 +76,7 @@ namespace Crumble.Core
         public static void RaiseAssistantLevelChanged(string id, int level) => AssistantLevelChanged?.Invoke(id, level);
         public static void RaiseStatsChanged(BigDouble clickDamage, BigDouble dps) => StatsChanged?.Invoke(clickDamage, dps);
         public static void RaiseResearchNodeChanged(string id, int level) => ResearchNodeChanged?.Invoke(id, level);
+        public static void RaiseOfflineEarningsReady(BigDouble coins, double seconds) => OfflineEarningsReady?.Invoke(coins, seconds);
         public static void RaisePrestige(BigDouble kpGained) => Prestige?.Invoke(kpGained);
         public static void RaiseGameLoaded(SaveData data) => GameLoaded?.Invoke(data);
         public static void RaiseGameSaved() => GameSaved?.Invoke();

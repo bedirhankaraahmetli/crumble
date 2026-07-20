@@ -36,6 +36,12 @@ namespace Crumble.Gameplay
         /// <summary>Upgrade cost discount, already clamped to GameMath.MaxUpgradeCostReduction.</summary>
         public double UpgradeCostReduction { get; private set; }
 
+        /// <summary>Added to the base offline efficiency fraction (0.10 = +10%).</summary>
+        public double OfflineEfficiencyBonus { get; private set; }
+
+        /// <summary>Extra hours added to the offline accumulation cap.</summary>
+        public double OfflineCapBonusHours { get; private set; }
+
         private void OnEnable() => GameEvents.GameLoaded += OnGameLoaded;
         private void OnDisable() => GameEvents.GameLoaded -= OnGameLoaded;
 
@@ -109,7 +115,7 @@ namespace Crumble.Gameplay
 
         private void Recompute()
         {
-            double click = 1, dps = 1, coin = 1, reduction = 0;
+            double click = 1, dps = 1, coin = 1, reduction = 0, offlineEfficiency = 0, offlineCapHours = 0;
 
             if (nodes != null && _levels != null)
             {
@@ -136,9 +142,15 @@ namespace Crumble.Gameplay
                         case ResearchEffectType.UpgradeCostReduction:
                             reduction += total;
                             break;
+                        case ResearchEffectType.OfflineEfficiency:
+                            offlineEfficiency += total;
+                            break;
+                        case ResearchEffectType.OfflineCapHours:
+                            offlineCapHours += total;
+                            break;
                         // Remaining effect types belong to systems that arrive in later
-                        // steps (crit, Fever, offline, artifacts, expeditions, museum);
-                        // their nodes can be bought now and take hold when those land.
+                        // steps (crit, Fever, artifacts, expeditions, museum); their nodes
+                        // can be bought now and take hold when those land.
                     }
                 }
             }
@@ -147,6 +159,8 @@ namespace Crumble.Gameplay
             DpsMultiplier = dps;
             CoinMultiplier = coin;
             UpgradeCostReduction = Math.Min(reduction, GameMath.MaxUpgradeCostReduction);
+            OfflineEfficiencyBonus = offlineEfficiency;
+            OfflineCapBonusHours = offlineCapHours;
         }
     }
 }

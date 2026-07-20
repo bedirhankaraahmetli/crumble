@@ -43,6 +43,17 @@ namespace Crumble.Gameplay
         private static double ResearchCoinMultiplier =>
             ResearchManager.Instance != null ? ResearchManager.Instance.CoinMultiplier : 1;
 
+        /// <summary>Exposed for offline-progress estimation.</summary>
+        public double CoinPerDamageRatio => coinPerDamageRatio;
+
+        /// <summary>Shatter payout of the current tablet (before multipliers) — offline estimation.</summary>
+        public BigDouble CurrentShatterReward => CurrentMaterial == null
+            ? BigDouble.Zero
+            : GameMath.TabletReward(
+                CurrentMaterial.BreakReward, CurrentMaterial.RewardGrowthFactor,
+                GameMath.StageWithinMaterial(Stage, stagesPerMaterial, materials.Length),
+                IsMilestone, CurrentMaterial.MilestoneRewardMultiplier);
+
         private void OnEnable() => GameEvents.GameLoaded += OnGameLoaded;
         private void OnDisable() => GameEvents.GameLoaded -= OnGameLoaded;
 
