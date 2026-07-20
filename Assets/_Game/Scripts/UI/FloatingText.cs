@@ -5,7 +5,8 @@ namespace Crumble.UI
 {
     /// <summary>
     /// One pooled floating damage number. Rises and fades, then returns itself to the
-    /// pool — never destroyed (mobile rule: no per-tap allocations).
+    /// pool — never destroyed (mobile rule: no per-tap allocations). Style (size, color)
+    /// is set per show so the same instance serves normal hits and crits.
     /// </summary>
     [RequireComponent(typeof(Text))]
     public sealed class FloatingText : MonoBehaviour
@@ -22,15 +23,16 @@ namespace Crumble.UI
         {
             _pool = pool;
             _text = GetComponent<Text>();
-            _baseColor = _text.color;
         }
 
-        public void Show(string value, Vector2 screenPosition)
+        public void Show(string value, Vector2 screenPosition, int fontSize, Color color)
         {
             _text.text = value;
+            _text.fontSize = fontSize;
+            _baseColor = color;
+            _text.color = color;
             transform.position = screenPosition;
             _life = LifetimeSeconds;
-            _text.color = _baseColor;
             gameObject.SetActive(true);
         }
 

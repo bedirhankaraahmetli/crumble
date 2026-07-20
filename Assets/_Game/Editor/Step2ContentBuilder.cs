@@ -228,6 +228,7 @@ namespace Crumble.EditorTools
                 so.RewardGrowthFactor = 1.4;
                 so.MilestoneHpMultiplier = 2.0;
                 so.MilestoneRewardMultiplier = 3.0;
+                so.BaseColor = def.Base;
                 so.CrackStates = new Sprite[5];
                 for (var state = 0; state < 5; state++)
                 {

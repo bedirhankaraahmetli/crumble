@@ -42,6 +42,15 @@ namespace Crumble.Gameplay
         /// <summary>Extra hours added to the offline accumulation cap.</summary>
         public double OfflineCapBonusHours { get; private set; }
 
+        /// <summary>Extra seconds added to Fever Mode's duration.</summary>
+        public double FeverDurationBonusSeconds { get; private set; }
+
+        /// <summary>Added to the base tap crit chance (0.05 = +5%).</summary>
+        public double CritChanceBonus { get; private set; }
+
+        /// <summary>Added to the base crit damage multiplier (0.5 = +0.5×).</summary>
+        public double CritMultiplierBonus { get; private set; }
+
         private void OnEnable() => GameEvents.GameLoaded += OnGameLoaded;
         private void OnDisable() => GameEvents.GameLoaded -= OnGameLoaded;
 
@@ -115,7 +124,8 @@ namespace Crumble.Gameplay
 
         private void Recompute()
         {
-            double click = 1, dps = 1, coin = 1, reduction = 0, offlineEfficiency = 0, offlineCapHours = 0;
+            double click = 1, dps = 1, coin = 1, reduction = 0, offlineEfficiency = 0, offlineCapHours = 0,
+                feverSeconds = 0, critChance = 0, critMultiplier = 0;
 
             if (nodes != null && _levels != null)
             {
@@ -148,6 +158,15 @@ namespace Crumble.Gameplay
                         case ResearchEffectType.OfflineCapHours:
                             offlineCapHours += total;
                             break;
+                        case ResearchEffectType.FeverDuration:
+                            feverSeconds += total;
+                            break;
+                        case ResearchEffectType.CritChance:
+                            critChance += total;
+                            break;
+                        case ResearchEffectType.CritMultiplier:
+                            critMultiplier += total;
+                            break;
                         // Remaining effect types belong to systems that arrive in later
                         // steps (crit, Fever, artifacts, expeditions, museum); their nodes
                         // can be bought now and take hold when those land.
@@ -161,6 +180,9 @@ namespace Crumble.Gameplay
             UpgradeCostReduction = Math.Min(reduction, GameMath.MaxUpgradeCostReduction);
             OfflineEfficiencyBonus = offlineEfficiency;
             OfflineCapBonusHours = offlineCapHours;
+            FeverDurationBonusSeconds = feverSeconds;
+            CritChanceBonus = critChance;
+            CritMultiplierBonus = critMultiplier;
         }
     }
 }

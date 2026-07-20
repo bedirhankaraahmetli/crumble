@@ -22,6 +22,10 @@ namespace Crumble.Gameplay
         [Header("Balance")]
         [Tooltip("Click damage before any tools (research multipliers arrive in Step 5).")]
         [SerializeField] private double baseClickDamage = 1;
+        [Tooltip("Chance for a tap to crit before research bonuses (0.05 = 5%).")]
+        [SerializeField] private double baseCritChance = 0.05;
+        [Tooltip("Crit damage multiplier before research bonuses (starts at x2).")]
+        [SerializeField] private double baseCritMultiplier = 2.0;
 
         private UpgradesState _state;
 
@@ -33,6 +37,12 @@ namespace Crumble.Gameplay
 
         /// <summary>Sum of every assistant's passive damage per second.</summary>
         public BigDouble TotalDps { get; private set; } = BigDouble.Zero;
+
+        /// <summary>Tap crit chance 0..1 (base + CritChance research).</summary>
+        public double CritChance { get; private set; }
+
+        /// <summary>Crit damage multiplier (base ×2 + CritMultiplier research).</summary>
+        public double CritMultiplier { get; private set; } = 2.0;
 
         private void OnEnable() => GameEvents.GameLoaded += OnGameLoaded;
         private void OnDisable() => GameEvents.GameLoaded -= OnGameLoaded;
@@ -182,6 +192,9 @@ namespace Crumble.Gameplay
 
             TotalClickDamage = click;
             TotalDps = dps;
+            CritChance = System.Math.Min(1.0,
+                baseCritChance + (research != null ? research.CritChanceBonus : 0));
+            CritMultiplier = baseCritMultiplier + (research != null ? research.CritMultiplierBonus : 0);
             GameEvents.RaiseStatsChanged(click, dps);
         }
     }

@@ -74,8 +74,8 @@ Handy editor menus:
 - [x] **Prestige** — cube-root Knowledge Points, live preview, confirm + reset flow
 - [x] **Research Tree** — 4 branches × 15 stages, prerequisite graph, KP-powered permanent multipliers
 - [x] **Offline progress** — welcome-back earnings with optional x2 rewarded-ad collect
-- [ ] **Juice** — Fever Mode, screen shake, particles, haptics *(next up)*
-- [ ] **Side systems** — Expedition Tent, Museum & Artifacts, dynamic events
+- [x] **Juice** — Fever Mode, critical hits, positional damage popups, live DPS meter, screen shake, particles, haptics
+- [ ] **Side systems** — Expedition Tent, Museum & Artifacts, dynamic events *(next up)*
 - [ ] **Endgame** — Cosmic Archive, Time Crystals, Cosmic Altar
 - [ ] **Ship** — safe areas, pooling audit, store integration
 

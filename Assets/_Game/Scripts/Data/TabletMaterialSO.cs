@@ -45,5 +45,7 @@ namespace Crumble.Data
         [Header("Visuals")]
         [Tooltip("5 crack states: Full, Little Cracked, Cracked, Heavily Cracked, Shattered.")]
         public Sprite[] CrackStates = new Sprite[5];
+        [Tooltip("Representative color — tints shatter particles and dust.")]
+        public Color BaseColor = new Color(0.55f, 0.42f, 0.28f);
     }
 }

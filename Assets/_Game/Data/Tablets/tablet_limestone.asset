@@ -28,3 +28,4 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e7b859e57958ca041b208eff2e3f3889, type: 3}
   - {fileID: 21300000, guid: f0d92371920358d49b5f3946a1fb6318, type: 3}
   - {fileID: 21300000, guid: 5e3de070a823d71408d17ce046ca9fea, type: 3}
+  BaseColor: {r: 0.8, g: 0.78, b: 0.68, a: 1}

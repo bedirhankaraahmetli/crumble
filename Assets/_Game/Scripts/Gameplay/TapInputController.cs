@@ -45,11 +45,12 @@ namespace Crumble.Gameplay
                 }
             }
 
-            Vector2 worldPoint = _camera.ScreenToWorldPoint(pointer.position.ReadValue());
+            var screenPosition = pointer.position.ReadValue();
+            Vector2 worldPoint = _camera.ScreenToWorldPoint(screenPosition);
             var hit = Physics2D.OverlapPoint(worldPoint, tappableLayers);
             if (hit != null)
             {
-                TabletManager.Instance.Tap();
+                TabletManager.Instance.TapAt(screenPosition);
             }
         }
     }

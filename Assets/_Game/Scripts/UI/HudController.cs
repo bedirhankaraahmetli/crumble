@@ -1,6 +1,7 @@
 using BreakInfinity;
 using Crumble.Core;
 using Crumble.Data;
+using Crumble.Gameplay;
 using Crumble.Numerics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,12 +28,22 @@ namespace Crumble.UI
         [Header("Prestige")]
         [SerializeField] private Text kpText;
 
+        // Measured DPS: all damage (taps + assistant ticks) accumulates into a rolling
+        // window of fixed buckets — fast tapping spikes the readout, idle settles back
+        // to the assistants' rate. Fixed arrays, zero allocations on the damage path.
+        private const float BucketSeconds = 0.25f;
+        private const int BucketCount = 8; // 2-second window
+
+        private readonly BigDouble[] _damageBuckets = new BigDouble[BucketCount];
+        private int _bucketIndex;
+        private float _bucketTimer;
+
         private void OnEnable()
         {
             GameEvents.CoinsChanged += OnCoinsChanged;
             GameEvents.TabletChanged += OnTabletChanged;
             GameEvents.TabletHpChanged += OnHpChanged;
-            GameEvents.StatsChanged += OnStatsChanged;
+            GameEvents.TabletDamaged += OnTabletDamaged;
             GameEvents.KnowledgePointsChanged += OnKnowledgeChanged;
         }
 
@@ -41,8 +52,46 @@ namespace Crumble.UI
             GameEvents.CoinsChanged -= OnCoinsChanged;
             GameEvents.TabletChanged -= OnTabletChanged;
             GameEvents.TabletHpChanged -= OnHpChanged;
-            GameEvents.StatsChanged -= OnStatsChanged;
+            GameEvents.TabletDamaged -= OnTabletDamaged;
             GameEvents.KnowledgePointsChanged -= OnKnowledgeChanged;
+        }
+
+        private void OnTabletDamaged(DamageInfo info)
+        {
+            _damageBuckets[_bucketIndex] += info.Amount;
+        }
+
+        private void Update()
+        {
+            _bucketTimer += Time.unscaledDeltaTime;
+            while (_bucketTimer >= BucketSeconds)
+            {
+                _bucketTimer -= BucketSeconds;
+                _bucketIndex = (_bucketIndex + 1) % BucketCount;
+                _damageBuckets[_bucketIndex] = BigDouble.Zero;
+                RefreshStatsLine();
+            }
+        }
+
+        private void RefreshStatsLine()
+        {
+            if (statsText == null)
+            {
+                return;
+            }
+
+            // effective click damage from the source of truth — includes the fever multiplier
+            var tap = TabletManager.Instance != null ? TabletManager.Instance.ClickDamage : BigDouble.One;
+
+            var windowDamage = BigDouble.Zero;
+            foreach (var bucket in _damageBuckets)
+            {
+                windowDamage += bucket;
+            }
+
+            var measuredDps = windowDamage / (BucketSeconds * BucketCount);
+            statsText.text =
+                $"Tap {NumberFormatter.Format(tap)}    DPS {NumberFormatter.Format(measuredDps)}";
         }
 
         private void OnKnowledgeChanged(BigDouble total)
@@ -50,15 +99,6 @@ namespace Crumble.UI
             if (kpText != null)
             {
                 kpText.text = "KP " + NumberFormatter.Format(total);
-            }
-        }
-
-        private void OnStatsChanged(BigDouble clickDamage, BigDouble dps)
-        {
-            if (statsText != null)
-            {
-                statsText.text =
-                    $"Tap {NumberFormatter.Format(clickDamage)}    DPS {NumberFormatter.Format(dps)}";
             }
         }
 

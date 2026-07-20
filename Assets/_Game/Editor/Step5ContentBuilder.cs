@@ -44,7 +44,10 @@ namespace Crumble.EditorTools
                     "Resonant Strikes", "Diamond-Tipped Tools", "Master Excavator", "Seismic Precision",
                     "Molecular Cleaving", "Temporal Reflexes", "The Archaeologist's Creed",
                 },
-                Effect = stage => ResearchEffectType.ClickDamageMultiplier,
+                Effect = stage => stage == 5 || stage == 10 ? ResearchEffectType.FeverDuration
+                    : stage == 3 || stage == 8 ? ResearchEffectType.CritChance
+                    : stage == 6 || stage == 12 ? ResearchEffectType.CritMultiplier
+                    : ResearchEffectType.ClickDamageMultiplier,
             },
             new BranchDef
             {
@@ -151,6 +154,9 @@ namespace Crumble.EditorTools
                     so.EffectPerLevel = isUltimate ? 1.0
                         : effect == ResearchEffectType.UpgradeCostReduction ? 0.02
                         : effect == ResearchEffectType.OfflineCapHours ? 1.0 // +1 hour per level
+                        : effect == ResearchEffectType.FeverDuration ? 0.5 // +0.5s per level
+                        : effect == ResearchEffectType.CritChance ? 0.01 // +1% per level
+                        : effect == ResearchEffectType.CritMultiplier ? 0.1 // +0.1x per level
                         : 0.04 + 0.02 * (stage - 1);
 
                     if (isNew)

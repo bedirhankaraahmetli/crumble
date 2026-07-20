@@ -51,8 +51,8 @@ Assets/_Game/
 4. ✅ Prestige + KP — PrestigeManager, live cube-root KP preview button, confirm dialog, run wipe keeping KP (GameLoaded rebind flow), 67 tests
 5. ✅ Research Tree — 60 ResearchNodeSO (4 branches × 15 stages), ResearchManager (prereq graph, KP purchases, effect aggregation into damage/DPS/coins/costs), 4-tab panel with lock/silhouette rules, 70 tests
 6. ✅ Offline progress — OfflineProgressManager (DPS × capped time, trickle + amortized shatters), welcome-back popup with COLLECT / COLLECT x2 (rewarded ad via AdManager stub), OfflineEfficiency + OfflineCapHours research live, 74 tests
-7. ➡️ Juice — Fever Mode combo bar, shake, particles, haptics
-8. Side systems — Expedition Tent, Museum & Artifacts, night cycle + sandstorm events
+7. ✅ Juice — FeverManager (25-tap combo → 5× clicks for 10s+research, decay), fever bar UI, CameraShake (shatter/milestone/fever), tinted shatter+dust particles (manual Emit, pooled), tap punch-scale, Haptics wrapper
+8. ➡️ Side systems — Expedition Tent, Museum & Artifacts, night cycle + sandstorm events
 9. Endgame — Cosmic Archive Hard Prestige, Time Crystals, Cosmic Altar
 10. Ship pass — safe-area, pooling audit, rewarded ads/IAP hooks
 

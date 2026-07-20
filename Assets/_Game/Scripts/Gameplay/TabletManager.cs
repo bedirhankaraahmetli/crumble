@@ -36,9 +36,22 @@ namespace Crumble.Gameplay
         /// <summary>True while the current tablet is a material's final-stage "boss".</summary>
         public bool IsMilestone { get; private set; }
 
-        /// <summary>Aggregated by UpgradeManager (base + tools, × research multipliers).</summary>
-        public BigDouble ClickDamage =>
-            UpgradeManager.Instance != null ? UpgradeManager.Instance.TotalClickDamage : BigDouble.One;
+        /// <summary>Base + tools × research (UpgradeManager), × fever multiplier while active.</summary>
+        public BigDouble ClickDamage
+        {
+            get
+            {
+                var damage = UpgradeManager.Instance != null
+                    ? UpgradeManager.Instance.TotalClickDamage
+                    : BigDouble.One;
+                if (FeverManager.Instance != null && FeverManager.Instance.IsFeverActive)
+                {
+                    damage *= FeverManager.Instance.FeverMultiplier;
+                }
+
+                return damage;
+            }
+        }
 
         private static double ResearchCoinMultiplier =>
             ResearchManager.Instance != null ? ResearchManager.Instance.CoinMultiplier : 1;
@@ -82,10 +95,35 @@ namespace Crumble.Gameplay
             }
         }
 
-        /// <summary>Entry point for tap input. UI/input may call this; logic stays here.</summary>
+        /// <summary>Scripted/legacy tap with no position (numbers fall back to the tablet).</summary>
         public void Tap()
         {
-            ApplyDamage(ClickDamage, fromClick: true);
+            TapAt(Vector2.zero);
+        }
+
+        /// <summary>
+        /// Entry point for tap input; screenPosition is where the press landed so damage
+        /// numbers can spawn under the finger. Rolls the crit here (crit stacks with fever).
+        /// </summary>
+        public void TapAt(Vector2 screenPosition)
+        {
+            if (FeverManager.Instance != null)
+            {
+                FeverManager.Instance.RegisterTap(); // the filling tap benefits if it triggers fever
+            }
+
+            var damage = ClickDamage;
+            var isCrit = false;
+            double critMultiplier = 1;
+            var upgrades = UpgradeManager.Instance;
+            if (upgrades != null && upgrades.CritChance > 0 && Random.value < upgrades.CritChance)
+            {
+                isCrit = true;
+                critMultiplier = upgrades.CritMultiplier;
+                damage *= critMultiplier;
+            }
+
+            ApplyDamage(damage, fromClick: true, isCrit, critMultiplier, screenPosition);
         }
 
         /// <summary>Assistant DPS lands in fixed ticks so HP/coin events stay bounded.</summary>
@@ -113,6 +151,11 @@ namespace Crumble.Gameplay
 
         public void ApplyDamage(BigDouble damage, bool fromClick)
         {
+            ApplyDamage(damage, fromClick, isCrit: false, critMultiplier: 1, screenPosition: Vector2.zero);
+        }
+
+        private void ApplyDamage(BigDouble damage, bool fromClick, bool isCrit, double critMultiplier, Vector2 screenPosition)
+        {
             if (_state == null || CurrentMaterial == null || damage <= 0)
             {
                 return;
@@ -121,7 +164,7 @@ namespace Crumble.Gameplay
             _state.RemainingHp -= damage;
             CurrencyManager.Instance.AddCoins(
                 GameMath.CoinsForDamage(damage, coinPerDamageRatio) * ResearchCoinMultiplier);
-            GameEvents.RaiseTabletDamaged(damage, fromClick);
+            GameEvents.RaiseTabletDamaged(new DamageInfo(damage, fromClick, isCrit, critMultiplier, screenPosition));
 
             if (_state.RemainingHp <= 0)
             {
@@ -143,6 +186,10 @@ namespace Crumble.Gameplay
 
             GameEvents.RaiseTabletHpChanged(BigDouble.Zero, MaxHp);
             GameEvents.RaiseTabletShattered(CurrentMaterial.Id, _state.Stage);
+            if (IsMilestone)
+            {
+                Haptics.Impact();
+            }
 
             SpawnTablet(_state.Stage + 1);
         }

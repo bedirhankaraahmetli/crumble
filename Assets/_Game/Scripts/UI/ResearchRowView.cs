@@ -91,9 +91,10 @@ namespace Crumble.UI
                 case ResearchEffectType.AssistantDpsMultiplier: return "+" + p + " assistant DPS / lv";
                 case ResearchEffectType.CoinDropMultiplier: return "+" + p + " coins / lv";
                 case ResearchEffectType.UpgradeCostReduction: return "-" + p + " upgrade costs / lv";
-                case ResearchEffectType.CritChance: return "+" + p + " crit chance / lv (soon)";
-                case ResearchEffectType.CritMultiplier: return "+" + p + " crit damage / lv (soon)";
-                case ResearchEffectType.FeverDuration: return "+" + p + " fever duration / lv (soon)";
+                case ResearchEffectType.CritChance: return "+" + p + " crit chance / lv";
+                case ResearchEffectType.CritMultiplier: return "+" + p + " crit damage / lv";
+                case ResearchEffectType.FeverDuration:
+                    return "+" + node.EffectPerLevel.ToString("0.#", CultureInfo.InvariantCulture) + "s fever / lv";
                 case ResearchEffectType.AssistantSynergy: return "+" + p + " synergy / lv (soon)";
                 case ResearchEffectType.OfflineEfficiency: return "+" + p + " offline gains / lv";
                 case ResearchEffectType.OfflineCapHours:
