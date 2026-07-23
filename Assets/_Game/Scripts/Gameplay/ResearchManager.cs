@@ -51,6 +51,15 @@ namespace Crumble.Gameplay
         /// <summary>Added to the base crit damage multiplier (0.5 = +0.5×).</summary>
         public double CritMultiplierBonus { get; private set; }
 
+        /// <summary>Multiplies artifact drop chances (0.2 = +20%).</summary>
+        public double ArtifactDropRateBonus { get; private set; }
+
+        /// <summary>Shrinks expedition durations (0.5 → 1.5× faster).</summary>
+        public double ExpeditionSpeedBonus { get; private set; }
+
+        /// <summary>Amplifies museum set bonuses (0.3 = +30% stronger).</summary>
+        public double MuseumBonusMultiplier { get; private set; }
+
         private void OnEnable() => GameEvents.GameLoaded += OnGameLoaded;
         private void OnDisable() => GameEvents.GameLoaded -= OnGameLoaded;
 
@@ -125,7 +134,8 @@ namespace Crumble.Gameplay
         private void Recompute()
         {
             double click = 1, dps = 1, coin = 1, reduction = 0, offlineEfficiency = 0, offlineCapHours = 0,
-                feverSeconds = 0, critChance = 0, critMultiplier = 0;
+                feverSeconds = 0, critChance = 0, critMultiplier = 0,
+                artifactRate = 0, expeditionSpeed = 0, museumBonus = 0;
 
             if (nodes != null && _levels != null)
             {
@@ -167,6 +177,15 @@ namespace Crumble.Gameplay
                         case ResearchEffectType.CritMultiplier:
                             critMultiplier += total;
                             break;
+                        case ResearchEffectType.ArtifactDropRate:
+                            artifactRate += total;
+                            break;
+                        case ResearchEffectType.ExpeditionSpeed:
+                            expeditionSpeed += total;
+                            break;
+                        case ResearchEffectType.MuseumBonus:
+                            museumBonus += total;
+                            break;
                         // Remaining effect types belong to systems that arrive in later
                         // steps (crit, Fever, artifacts, expeditions, museum); their nodes
                         // can be bought now and take hold when those land.
@@ -183,6 +202,9 @@ namespace Crumble.Gameplay
             FeverDurationBonusSeconds = feverSeconds;
             CritChanceBonus = critChance;
             CritMultiplierBonus = critMultiplier;
+            ArtifactDropRateBonus = artifactRate;
+            ExpeditionSpeedBonus = expeditionSpeed;
+            MuseumBonusMultiplier = museumBonus;
         }
     }
 }

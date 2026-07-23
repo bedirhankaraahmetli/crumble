@@ -32,6 +32,24 @@ namespace Crumble.Core
         /// <summary>Research node id → current level.</summary>
         [JsonProperty("research_tree_state")]
         public Dictionary<string, int> ResearchTree = new Dictionary<string, int>();
+
+        /// <summary>Artifact id → owned count.</summary>
+        [JsonProperty("museum_state")]
+        public Dictionary<string, int> Museum = new Dictionary<string, int>();
+
+        [JsonProperty("expedition_state")]
+        public ExpeditionSaveState Expedition = new ExpeditionSaveState();
+    }
+
+    public sealed class ExpeditionSaveState
+    {
+        /// <summary>Empty when no expedition is running.</summary>
+        [JsonProperty("expedition_id")]
+        public string ExpeditionId = "";
+
+        /// <summary>Unix seconds (UTC) when the active expedition finishes.</summary>
+        [JsonProperty("end_timestamp")]
+        public long EndUnixUtc;
     }
 
     public sealed class CurrencyState

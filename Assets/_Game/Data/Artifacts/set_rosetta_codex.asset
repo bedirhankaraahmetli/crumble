@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 686c1f42f5a10da49910e04d53b62f77, type: 3}
+  m_Name: set_rosetta_codex
+  m_EditorClassIdentifier: Crumble.Runtime::Crumble.Data.MuseumSetSO
+  Id: set_rosetta_codex
+  DisplayName: The Rosetta Codex
+  Artifacts:
+  - {fileID: 11400000, guid: de4e067ad27fc2645ad1b376290af2fb, type: 2}
+  - {fileID: 11400000, guid: dcb174d78702cfc469097f93b665fdae, type: 2}
+  - {fileID: 11400000, guid: 81ab3ae575adbcb4ab96be40b2a73968, type: 2}
+  - {fileID: 11400000, guid: 80cc9098bc071a54181cf9c6a60122f0, type: 2}
+  BonusType: 2
+  BonusAmount: 0.25

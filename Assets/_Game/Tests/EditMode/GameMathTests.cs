@@ -195,5 +195,27 @@ namespace Crumble.Tests
             Assert.That(GameMath.OfflineCoins(0, 3600, 0.02, 100, 5, 0.5) == 0, Is.True);
             Assert.That(GameMath.OfflineCoins(10, 0, 0.02, 100, 5, 0.5) == 0, Is.True);
         }
+
+        // ---- Expeditions & events ----
+
+        [Test]
+        public void ExpeditionDuration_ShrinksWithSpeedResearch()
+        {
+            Assert.That(GameMath.ExpeditionDurationHours(4, 0), Is.EqualTo(4).Within(1e-9));
+            Assert.That(GameMath.ExpeditionDurationHours(4, 1.0), Is.EqualTo(2).Within(1e-9));
+            Assert.That(GameMath.ExpeditionDurationHours(4, -5), Is.EqualTo(4).Within(1e-9), "negative bonus ignored");
+        }
+
+        [Test]
+        public void EventReward_UsesDpsIncomeWhenLarger()
+        {
+            AssertApprox(36000, GameMath.EventReward(10, 3600, 5, 25)); // 10 dps × 1h beats 125 floor
+        }
+
+        [Test]
+        public void EventReward_FallsBackToTabletFloor()
+        {
+            AssertApprox(125, GameMath.EventReward(0, 3600, 5, 25)); // no assistants → 25 shatters
+        }
     }
 }

@@ -190,6 +190,13 @@ namespace Crumble.Gameplay
                 dps *= research.DpsMultiplier;
             }
 
+            var museum = MuseumManager.Instance;
+            if (museum != null)
+            {
+                click *= museum.ClickMultiplier;
+                dps *= museum.DpsMultiplier;
+            }
+
             TotalClickDamage = click;
             TotalDps = dps;
             CritChance = System.Math.Min(1.0,

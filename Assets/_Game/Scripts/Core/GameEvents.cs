@@ -50,6 +50,34 @@ namespace Crumble.Core
         /// <summary>(node id, new level). Fired after a successful research purchase.</summary>
         public static event Action<string, int> ResearchNodeChanged;
 
+        // ---- Museum & artifacts ----
+        /// <summary>An artifact entered the museum (tablet drop or expedition haul).</summary>
+        public static event Action<ArtifactSO> ArtifactDropped;
+
+        /// <summary>Museum contents / set bonuses changed.</summary>
+        public static event Action MuseumChanged;
+
+        // ---- Expeditions ----
+        /// <summary>(mission, end unix seconds). A team departed.</summary>
+        public static event Action<ExpeditionSO, long> ExpeditionStarted;
+
+        /// <summary>(coins, artifact or null). The haul was collected.</summary>
+        public static event Action<BigDouble, ArtifactSO> ExpeditionCollected;
+
+        // ---- Environment ----
+        /// <summary>True when night falls (idle gains boosted), false at dawn.</summary>
+        public static event Action<bool> NightChanged;
+
+        public static event Action SandstormStarted;
+
+        /// <summary>Swipe-clearing progress 0..1.</summary>
+        public static event Action<float> SandstormProgress;
+
+        /// <summary>(coin reward). The storm was swiped clean in time.</summary>
+        public static event Action<BigDouble> SandstormCleared;
+
+        public static event Action SandstormEnded;
+
         // ---- Fever Mode ----
         /// <summary>Bar fill 0..1 (charge while tapping; remaining-time fraction during fever).</summary>
         public static event Action<float> FeverProgressChanged;
@@ -85,6 +113,15 @@ namespace Crumble.Core
         public static void RaiseAssistantLevelChanged(string id, int level) => AssistantLevelChanged?.Invoke(id, level);
         public static void RaiseStatsChanged(BigDouble clickDamage, BigDouble dps) => StatsChanged?.Invoke(clickDamage, dps);
         public static void RaiseResearchNodeChanged(string id, int level) => ResearchNodeChanged?.Invoke(id, level);
+        public static void RaiseArtifactDropped(ArtifactSO artifact) => ArtifactDropped?.Invoke(artifact);
+        public static void RaiseMuseumChanged() => MuseumChanged?.Invoke();
+        public static void RaiseExpeditionStarted(ExpeditionSO expedition, long endUnixUtc) => ExpeditionStarted?.Invoke(expedition, endUnixUtc);
+        public static void RaiseExpeditionCollected(BigDouble coins, ArtifactSO artifact) => ExpeditionCollected?.Invoke(coins, artifact);
+        public static void RaiseNightChanged(bool isNight) => NightChanged?.Invoke(isNight);
+        public static void RaiseSandstormStarted() => SandstormStarted?.Invoke();
+        public static void RaiseSandstormProgress(float progress) => SandstormProgress?.Invoke(progress);
+        public static void RaiseSandstormCleared(BigDouble reward) => SandstormCleared?.Invoke(reward);
+        public static void RaiseSandstormEnded() => SandstormEnded?.Invoke();
         public static void RaiseFeverProgressChanged(float progress) => FeverProgressChanged?.Invoke(progress);
         public static void RaiseFeverStarted(double durationSeconds) => FeverStarted?.Invoke(durationSeconds);
         public static void RaiseFeverEnded() => FeverEnded?.Invoke();

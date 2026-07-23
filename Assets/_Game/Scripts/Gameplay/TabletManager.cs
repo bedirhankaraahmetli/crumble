@@ -53,8 +53,15 @@ namespace Crumble.Gameplay
             }
         }
 
-        private static double ResearchCoinMultiplier =>
-            ResearchManager.Instance != null ? ResearchManager.Instance.CoinMultiplier : 1;
+        private static double ResearchCoinMultiplier
+        {
+            get
+            {
+                var research = ResearchManager.Instance != null ? ResearchManager.Instance.CoinMultiplier : 1;
+                var museum = MuseumManager.Instance != null ? MuseumManager.Instance.CoinMultiplier : 1;
+                return research * museum;
+            }
+        }
 
         /// <summary>Exposed for offline-progress estimation.</summary>
         public double CoinPerDamageRatio => coinPerDamageRatio;
@@ -139,6 +146,12 @@ namespace Crumble.Gameplay
             {
                 _dpsTimer = 0f;
                 return;
+            }
+
+            var environment = EnvironmentManager.Instance;
+            if (environment != null && environment.IsNight)
+            {
+                dps *= environment.NightIdleMultiplier; // GDD §6: night boosts idle gains
             }
 
             _dpsTimer += Time.deltaTime;

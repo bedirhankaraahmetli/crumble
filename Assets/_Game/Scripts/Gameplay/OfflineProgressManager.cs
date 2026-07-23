@@ -66,6 +66,7 @@ namespace Crumble.Gameplay
                 tablet != null ? tablet.CurrentShatterReward : BigDouble.Zero,
                 efficiency);
             coins *= research != null ? research.CoinMultiplier : 1;
+            coins *= MuseumManager.Instance != null ? MuseumManager.Instance.CoinMultiplier : 1;
 
             if (coins <= 0)
             {

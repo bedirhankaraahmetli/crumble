@@ -123,6 +123,24 @@ namespace Crumble.Numerics
             return BigDouble.Pow(value, 1.0 / 3.0);
         }
 
+        /// <summary>Expedition wait time after ExpeditionSpeed research (never reaches zero).</summary>
+        public static double ExpeditionDurationHours(double baseHours, double speedBonus)
+        {
+            return baseHours / (1.0 + Math.Max(0.0, speedBonus));
+        }
+
+        /// <summary>
+        /// Event payout (expeditions, sandstorms): a window of full-DPS income with a floor
+        /// of several tablet-shatter rewards so early players (no assistants) still profit.
+        /// </summary>
+        public static BigDouble EventReward(
+            BigDouble dps, double rewardSeconds, BigDouble tabletShatterReward, double minTabletMultiple)
+        {
+            var fromDps = dps * rewardSeconds;
+            var floor = tabletShatterReward * minTabletMultiple;
+            return fromDps > floor ? fromDps : floor;
+        }
+
         /// <summary>Elapsed offline time actually credited, clamped by the (research-extended) cap.</summary>
         public static double CappedOfflineSeconds(double elapsedSeconds, double capHours)
         {
