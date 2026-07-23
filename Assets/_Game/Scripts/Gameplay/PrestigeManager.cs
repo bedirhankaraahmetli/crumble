@@ -26,10 +26,23 @@ namespace Crumble.Gameplay
 
         private void OnGameLoaded(SaveData data) => _data = data;
 
-        /// <summary>KP a prestige would award right now.</summary>
-        public BigDouble PendingKnowledge => _data == null
-            ? BigDouble.Zero
-            : GameMath.PrestigeKnowledge(_data.Currencies.LifetimeCoinsThisRun, kpDivisor);
+        /// <summary>KP a prestige would award right now (× the altar's KnowledgeGain).</summary>
+        public BigDouble PendingKnowledge
+        {
+            get
+            {
+                if (_data == null)
+                {
+                    return BigDouble.Zero;
+                }
+
+                var baseKp = GameMath.PrestigeKnowledge(_data.Currencies.LifetimeCoinsThisRun, kpDivisor);
+                var altar = CosmicAltarManager.Instance;
+                return altar == null
+                    ? baseKp
+                    : GameMath.ApplyKnowledgeMultiplier(baseKp, altar.KnowledgeMultiplier);
+            }
+        }
 
         public bool CanPrestige => PendingKnowledge >= 1;
 
@@ -43,8 +56,8 @@ namespace Crumble.Gameplay
             var kp = PendingKnowledge;
             CurrencyManager.Instance.AddKnowledge(kp);
 
-            // Wipe the run. KP stays; research_tree_state and Time Crystals (future
-            // systems) are deliberately untouched — only Hard Prestige clears those.
+            // Wipe the run. KP, research, museum and everything cosmic stay —
+            // only Hard Prestige (Cosmic Archive) digs deeper.
             _data.Currencies.AntiqueCoins = BigDouble.Zero;
             _data.Currencies.LifetimeCoinsThisRun = BigDouble.Zero;
             _data.Upgrades.Tools.Clear();

@@ -53,13 +53,17 @@ namespace Crumble.Gameplay
             }
         }
 
-        private static double ResearchCoinMultiplier
+        /// <summary>Research × museum × altar — BigDouble because altar mults compound unbounded.</summary>
+        private static BigDouble ResearchCoinMultiplier
         {
             get
             {
                 var research = ResearchManager.Instance != null ? ResearchManager.Instance.CoinMultiplier : 1;
                 var museum = MuseumManager.Instance != null ? MuseumManager.Instance.CoinMultiplier : 1;
-                return research * museum;
+                var altar = CosmicAltarManager.Instance != null
+                    ? CosmicAltarManager.Instance.CoinMultiplier
+                    : BigDouble.One;
+                return altar * (research * museum);
             }
         }
 

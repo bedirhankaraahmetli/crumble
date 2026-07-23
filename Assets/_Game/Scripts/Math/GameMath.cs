@@ -227,6 +227,49 @@ namespace Crumble.Numerics
                    == stagesPerMaterial - 1;
         }
 
+        /// <summary>
+        /// Hard Prestige reward (GDD §8): TC = floor(√(total KP this epoch / divisor)).
+        /// "Total KP this epoch" = current balance + KP sunk into the Research Tree, so
+        /// the whole journey since the last Archive counts. The square root keeps Time
+        /// Crystals scarcer than KP; the divisor sets the first Archive's payout.
+        /// </summary>
+        public static BigDouble TimeCrystalsForArchive(BigDouble totalKpThisEpoch, BigDouble divisor)
+        {
+            if (totalKpThisEpoch <= 0)
+            {
+                return BigDouble.Zero;
+            }
+
+            var crystals = BigDouble.Sqrt(totalKpThisEpoch / divisor);
+            if (crystals < 1)
+            {
+                return BigDouble.Zero;
+            }
+
+            // Same fp-error absorption as PrestigeKnowledge so √100 floors to 10, not 9.
+            return BigDouble.Floor(crystals * (1 + 1e-12));
+        }
+
+        /// <summary>
+        /// Cosmic Altar effect (GDD §8): multiplier = perLevel^level — compounds without
+        /// any cap, which is why altar multipliers must stay BigDouble end to end.
+        /// </summary>
+        public static BigDouble AltarMultiplier(double multiplierPerLevel, int level)
+        {
+            return level <= 0 ? BigDouble.One : BigDouble.Pow(multiplierPerLevel, level);
+        }
+
+        /// <summary>Prestige KP payout after the altar's KnowledgeGain multiplier (kept integer).</summary>
+        public static BigDouble ApplyKnowledgeMultiplier(BigDouble baseKp, BigDouble multiplier)
+        {
+            if (baseKp <= 0)
+            {
+                return BigDouble.Zero;
+            }
+
+            return BigDouble.Floor(baseKp * multiplier * (1 + 1e-12));
+        }
+
         /// <summary>Tablet HP including the milestone-stage multiplier.</summary>
         public static BigDouble TabletHp(
             BigDouble baseHp, double difficultyFactor, int stageWithinMaterial,

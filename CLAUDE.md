@@ -53,8 +53,8 @@ Assets/_Game/
 6. ✅ Offline progress — OfflineProgressManager (DPS × capped time, trickle + amortized shatters), welcome-back popup with COLLECT / COLLECT x2 (rewarded ad via AdManager stub), OfflineEfficiency + OfflineCapHours research live, 74 tests
 7. ✅ Juice — FeverManager (25-tap combo → 5× clicks for 10s+research, decay), fever bar UI, CameraShake (shatter/milestone/fever), tinted shatter+dust particles (manual Emit, pooled), tap punch-scale, Haptics wrapper
 8. ✅ Side systems — MuseumManager (12 artifacts / 3 sets, drops + set bonuses), ExpeditionManager (3 timestamp-based missions), EnvironmentManager (real-clock night, 1.5× idle), SandstormManager (swipe-clear events); Intuition research branch fully live; 77 tests
-9. ➡️ Endgame — Cosmic Archive Hard Prestige, Time Crystals, Cosmic Altar
-10. Ship pass — safe-area, pooling audit, rewarded ads/IAP hooks
+9. ✅ Endgame — CosmicArchiveManager (Hard Prestige unlocks when all 4 Stage-15 research ultimates are owned; TC = floor(√(epoch KP / divisor)), wipes everything but Time Crystals + altar), CosmicAltarManager (4 uncapped compounding TC upgrades feeding click/DPS/coins/KP), cosmic panel + confirm dialog + reveal-gated HUD button; fever cooldown (60s lockout after each fever); 89 tests
+10. ➡️ Ship pass — safe-area, pooling audit, rewarded ads/IAP hooks
 
 Update the ➡️ marker when a step is completed.
 

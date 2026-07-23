@@ -197,6 +197,13 @@ namespace Crumble.Gameplay
                 dps *= museum.DpsMultiplier;
             }
 
+            var altar = CosmicAltarManager.Instance;
+            if (altar != null)
+            {
+                click *= altar.ClickMultiplier;
+                dps *= altar.DpsMultiplier;
+            }
+
             TotalClickDamage = click;
             TotalDps = dps;
             CritChance = System.Math.Min(1.0,

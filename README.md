@@ -16,14 +16,14 @@ You run an archaeological excavation camp. Tap the screen to chip away at ancien
 - **Idle play** — hire assistants (a Water Dripper, a Clockwork Automaton, eventually an Interdimensional Portal…) that keep mining while you're away.
 - **Economy** — spend coins on 12 tools and 12 assistants with exponential cost curves; buy x1, x10, or MAX in one tap.
 - **Milestone tablets** — every material ends in a tougher "boss" tablet with a fat bonus reward.
-- **Prestige** *(in development)* — when tablet HP outgrows your damage, reset the run for **Knowledge Points** and spend them in a 4-branch prerequisite **Research Tree**.
-- **Endgame** *(planned)* — the Cosmic Archive: a hard prestige that wipes everything, including the tree, for Time Crystals and unbounded multipliers.
+- **Prestige** — when tablet HP outgrows your damage, reset the run for **Knowledge Points** and spend them in a 4-branch prerequisite **Research Tree**.
+- **Endgame** — master all four research ultimates to unlock the **Cosmic Archive**: a hard prestige that erases everything, even the tree, for **Time Crystals** spent on infinitely compounding Cosmic Altar multipliers.
 
 No forced ads — ever. Monetization will be limited to optional rewarded ads and ethical IAPs.
 
 ## ✨ What's playable today
 
-The core loop is fully playable in-editor: tap tablets through 20 stages of 4 Tier-1 materials, hire tools/assistants from a scrollable tabbed shop, watch passive DPS mine for you, and hit milestone bosses — with progress saved between sessions.
+The full game arc is playable in-editor: tap through milestone bosses, hire 12 tools + 12 assistants, prestige into a 60-node research tree, collect museum artifacts, run timed expeditions, ride out night cycles and sandstorms, chain Fever combos (with a cooldown between them), and — once all four ultimates are researched — solve the Universal Secret for Time Crystals at the Cosmic Altar. Progress persists between sessions, offline earnings included.
 
 ## 🏗️ Architecture
 
@@ -51,7 +51,7 @@ Assets/_Game/
   Plugins/           BreakInfinity.cs (MIT)
   Data/              Balanced content assets
   Editor/            Content builders, test runner, dev tools
-  Tests/EditMode/    66 NUnit tests (math, formatting, save round-trips)
+  Tests/EditMode/    89 NUnit tests (math, formatting, save round-trips)
 ```
 
 ## 🚀 Getting started
@@ -64,7 +64,7 @@ Handy editor menus:
 
 - `Crumble → Run EditMode Tests` — full test suite, results in `Temp/crumble_test_results.txt`
 - `Crumble → Dev → Reset Save` — wipe the save and restart fresh (works live in Play mode)
-- `Crumble → Build Step 2/3 Content And Scene` — regenerate placeholder art, content assets, and scene wiring from scratch
+- `Crumble → Build Step 2–9 Content And Scene` — regenerate placeholder art, content assets, and scene wiring from scratch
 
 ## 🗺️ Roadmap
 
@@ -76,8 +76,8 @@ Handy editor menus:
 - [x] **Offline progress** — welcome-back earnings with optional x2 rewarded-ad collect
 - [x] **Juice** — Fever Mode, critical hits, positional damage popups, live DPS meter, screen shake, particles, haptics
 - [x] **Side systems** — Expedition Tent missions, Museum & Artifacts with set bonuses, night cycle, sandstorm swipe events
-- [ ] **Endgame** — Cosmic Archive, Time Crystals, Cosmic Altar *(next up)*
-- [ ] **Ship** — safe areas, pooling audit, store integration
+- [x] **Endgame** — Cosmic Archive hard prestige, Time Crystals, infinitely compounding Cosmic Altar, Fever cooldown
+- [ ] **Ship** — safe areas, pooling audit, store integration *(next up)*
 
 ## 🧰 Built with
 

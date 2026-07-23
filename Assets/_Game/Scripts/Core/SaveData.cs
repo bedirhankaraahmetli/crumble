@@ -39,6 +39,21 @@ namespace Crumble.Core
 
         [JsonProperty("expedition_state")]
         public ExpeditionSaveState Expedition = new ExpeditionSaveState();
+
+        /// <summary>Endgame state — the only block (besides Time Crystals) that survives Hard Prestige.</summary>
+        [JsonProperty("cosmic_state")]
+        public CosmicSaveState Cosmic = new CosmicSaveState();
+    }
+
+    public sealed class CosmicSaveState
+    {
+        /// <summary>Altar upgrade id → level (levels are uncapped).</summary>
+        [JsonProperty("altar_upgrades")]
+        public Dictionary<string, int> AltarUpgrades = new Dictionary<string, int>();
+
+        /// <summary>How many times the Universal Secret has been solved.</summary>
+        [JsonProperty("archive_count")]
+        public int ArchiveCount;
     }
 
     public sealed class ExpeditionSaveState

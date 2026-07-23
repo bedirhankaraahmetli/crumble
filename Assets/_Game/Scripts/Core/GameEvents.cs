@@ -87,6 +87,14 @@ namespace Crumble.Core
 
         public static event Action FeverEnded;
 
+        /// <summary>(total seconds). A fever just ended — the bar can't recharge until this expires.</summary>
+        public static event Action<double> FeverCooldownStarted;
+
+        /// <summary>Remaining cooldown seconds; fired every frame while cooling down.</summary>
+        public static event Action<float> FeverCooldownChanged;
+
+        public static event Action FeverCooldownEnded;
+
         // ---- Offline progress ----
         /// <summary>(pending coins, credited seconds). Fired once at boot when the player returns.</summary>
         public static event Action<BigDouble, double> OfflineEarningsReady;
@@ -94,6 +102,13 @@ namespace Crumble.Core
         // ---- Prestige ----
         /// <summary>(KP gained). Fired after a Standard Prestige completes (state already reset).</summary>
         public static event Action<BigDouble> Prestige;
+
+        // ---- Cosmic Archive (endgame) ----
+        /// <summary>(TC gained). Fired after a Hard Prestige completes (everything already wiped).</summary>
+        public static event Action<BigDouble> HardPrestige;
+
+        /// <summary>(altar upgrade id, new level). Fired after a successful Cosmic Altar purchase.</summary>
+        public static event Action<string, int> AltarUpgradeChanged;
 
         // ---- Lifecycle ----
         /// <summary>Fired once the save file has been loaded (or a fresh one created).</summary>
@@ -125,8 +140,13 @@ namespace Crumble.Core
         public static void RaiseFeverProgressChanged(float progress) => FeverProgressChanged?.Invoke(progress);
         public static void RaiseFeverStarted(double durationSeconds) => FeverStarted?.Invoke(durationSeconds);
         public static void RaiseFeverEnded() => FeverEnded?.Invoke();
+        public static void RaiseFeverCooldownStarted(double totalSeconds) => FeverCooldownStarted?.Invoke(totalSeconds);
+        public static void RaiseFeverCooldownChanged(float remainingSeconds) => FeverCooldownChanged?.Invoke(remainingSeconds);
+        public static void RaiseFeverCooldownEnded() => FeverCooldownEnded?.Invoke();
         public static void RaiseOfflineEarningsReady(BigDouble coins, double seconds) => OfflineEarningsReady?.Invoke(coins, seconds);
         public static void RaisePrestige(BigDouble kpGained) => Prestige?.Invoke(kpGained);
+        public static void RaiseHardPrestige(BigDouble tcGained) => HardPrestige?.Invoke(tcGained);
+        public static void RaiseAltarUpgradeChanged(string id, int level) => AltarUpgradeChanged?.Invoke(id, level);
         public static void RaiseGameLoaded(SaveData data) => GameLoaded?.Invoke(data);
         public static void RaiseGameSaved() => GameSaved?.Invoke();
     }

@@ -67,6 +67,9 @@ namespace Crumble.Gameplay
                 efficiency);
             coins *= research != null ? research.CoinMultiplier : 1;
             coins *= MuseumManager.Instance != null ? MuseumManager.Instance.CoinMultiplier : 1;
+            coins *= CosmicAltarManager.Instance != null
+                ? CosmicAltarManager.Instance.CoinMultiplier
+                : BigDouble.One;
 
             if (coins <= 0)
             {

@@ -28,6 +28,9 @@ namespace Crumble.UI
         [Header("Prestige")]
         [SerializeField] private Text kpText;
 
+        [Header("Endgame")]
+        [SerializeField] private Text tcText;
+
         // Measured DPS: all damage (taps + assistant ticks) accumulates into a rolling
         // window of fixed buckets — fast tapping spikes the readout, idle settles back
         // to the assistants' rate. Fixed arrays, zero allocations on the damage path.
@@ -45,6 +48,7 @@ namespace Crumble.UI
             GameEvents.TabletHpChanged += OnHpChanged;
             GameEvents.TabletDamaged += OnTabletDamaged;
             GameEvents.KnowledgePointsChanged += OnKnowledgeChanged;
+            GameEvents.TimeCrystalsChanged += OnTimeCrystalsChanged;
         }
 
         private void OnDisable()
@@ -54,6 +58,7 @@ namespace Crumble.UI
             GameEvents.TabletHpChanged -= OnHpChanged;
             GameEvents.TabletDamaged -= OnTabletDamaged;
             GameEvents.KnowledgePointsChanged -= OnKnowledgeChanged;
+            GameEvents.TimeCrystalsChanged -= OnTimeCrystalsChanged;
         }
 
         private void OnTabletDamaged(DamageInfo info)
@@ -99,6 +104,16 @@ namespace Crumble.UI
             if (kpText != null)
             {
                 kpText.text = "KP " + NumberFormatter.Format(total);
+            }
+        }
+
+        /// <summary>Hidden until the endgame currency exists — no HUD clutter early on.</summary>
+        private void OnTimeCrystalsChanged(BigDouble total)
+        {
+            if (tcText != null)
+            {
+                tcText.text = "TC " + NumberFormatter.Format(total);
+                tcText.gameObject.SetActive(total > 0);
             }
         }
 

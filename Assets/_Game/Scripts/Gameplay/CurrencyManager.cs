@@ -74,5 +74,28 @@ namespace Crumble.Gameplay
             GameEvents.RaiseKnowledgePointsChanged(_state.KnowledgePoints);
             return true;
         }
+
+        public void AddTimeCrystals(BigDouble amount)
+        {
+            if (_state == null || amount <= 0)
+            {
+                return;
+            }
+
+            _state.TimeCrystals += amount;
+            GameEvents.RaiseTimeCrystalsChanged(_state.TimeCrystals);
+        }
+
+        public bool TrySpendTimeCrystals(BigDouble cost)
+        {
+            if (_state == null || cost < 0 || _state.TimeCrystals < cost)
+            {
+                return false;
+            }
+
+            _state.TimeCrystals -= cost;
+            GameEvents.RaiseTimeCrystalsChanged(_state.TimeCrystals);
+            return true;
+        }
     }
 }
